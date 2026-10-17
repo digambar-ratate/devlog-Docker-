@@ -1,0 +1,71 @@
+services: 
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    ports: 
+      - "3000:3000"
+  
+  db:
+    image: postgres:15-alpine
+    container_name: database
+    restart: always
+    environment:
+      POSTGRES_USER: digambar
+      POSTGRES_PASSWORD: redhat
+      POSTGRES_DB: devlog_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devlog_db
+      - DB_USER=digambar
+      - DB_PASSWORD=redhat
+    depends_on:
+      - db
+
+  worker:
+    build: ./worker
+    container_name: worker
+    restart: always
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devlog_db
+      - DB_USER=digambar
+      - DB_PASSWORD=redhat
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
