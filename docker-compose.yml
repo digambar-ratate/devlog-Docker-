@@ -1,4 +1,15 @@
 services: 
+  registry:
+    image: registry:2
+    container_name: private_registry
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./my_registry_backups:/var/lib/registry 
+
+
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -21,8 +32,9 @@ services:
     build: ./backend
     container_name: backend
     restart: always
+    image: localhost:5000/devlog-backend:latest
     ports:
-      - "5000:5000"
+      - "8000:5000"
     environment:
       - DB_HOST=db
       - DB_NAME=devlog_db
@@ -45,7 +57,7 @@ services:
 
 volumes:
   postgres_data:
-
+  my_registry_backups:
 
 
 
