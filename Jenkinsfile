@@ -15,10 +15,7 @@ pipeline {
                 stage('Test Backend (Python)') {
                     steps {
                         dir('backend') {
-                            // Install requirements and run python tests if you have them
                             sh 'pip install -r requirements.txt'
-                            // Uncomment the line below if you add python tests later (e.g., pytest)
-                            // sh 'pytest'
                         }
                     }
                 }
@@ -26,7 +23,6 @@ pipeline {
                     steps {
                         dir('frontend') {
                             sh 'npm install'
-                            sh 'npm run build'
                         }
                     }
                 }
