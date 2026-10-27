@@ -45,3 +45,6 @@ A full-stack, multi-tier developer logging application containerized and orchest
 4. **Stop the environment:**
    ```bash
    docker compose down
+
+
+DIGAMBAR
