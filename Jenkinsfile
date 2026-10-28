@@ -2,8 +2,16 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'ENVIRONMENT', choices: ['staging', 'production'], description: 'Select deployment environment')
-        booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Check to run backend/frontend tests')
+        choice(
+				name: 'ENVIRONMENT', 
+				choices: ['staging', 'production'], 
+				description: 'Select deployment environment'
+			)
+        booleanParam(
+				name: 'RUN_TESTS', 
+				defaultValue: true, 
+				description: 'Check to run backend/frontend tests'
+		)
     }
 
     stages {
@@ -49,10 +57,30 @@ pipeline {
     
     post {
         success {
-            echo "Deployment successful!"
+            emailext(
+			to: 'ratatedigambar02@gmail.com',
+			subject: "Deploynment Successful",
+			body: """
+                    Deployment completed successfully.
+
+                    Environment: ${params.ENVIRONMENT}
+                    Build Number: ${env.BUILD_NUMBER}
+                    Build URL: ${env.BUILD_URL}
+				  """
+			)
         }
         failure {
-            echo "Deployment failed."
+            emailext(
+			to: 'ratatedigambar02@gmail.com',
+			subject: 'Deploynment Unsuccessful',
+			body: """Deployment failed.
+
+                    Environment: ${params.ENVIRONMENT}
+                    Build Number: ${env.BUILD_NUMBER}
+                    Build URL: ${env.BUILD_URL}
+
+                    Please check the Jenkins console output."""
+			)
         }
     }
 }
