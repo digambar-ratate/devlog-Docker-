@@ -11,7 +11,7 @@ pipeline {
             when {
                 expression { params.RUN_TESTS == true }
             }
-            stages {
+            parallel {
                 stage('Test Backend (Python)') {
                     steps {
                         dir('backend') {
